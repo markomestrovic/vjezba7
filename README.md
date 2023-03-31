@@ -1,86 +1,176 @@
 # HCI-vježbe-2022-2023
 
-HCI repozitorij za vježbe
+## Vježba 7: Next Image and deploy
 
-Svaka vježba u ovom repozitoriju predstavljena je s dva git brancha. Jedan git branch je početak vježbe, a drugi je riješena vježba.
-Tijekom rada na projektu uvijek radimo na početku vježbe i radimo skupa. Branch s riješenom vježbom služi vama za usporedbu i debugging u slučaju da zapnete. Slobodno možete "prepisivati" iz riješene vježbe, ali ne znam koliko to ima smisla ako je cilj učiti :)
+U zadnjoj vježbi demonstrirat ćemo kako radi i čemu služi Next Image i kako objaviti stranicu jednom kad je gotova.
 
-Branch naming je: `start|solved/vjezba-'broj'--'opis-vjezbe'`
-<br/>npr: <br/>
-`start/vjezba-1--nextjs-init`
-<br/>tj.<br/>
-`solved/vjezba-1--nextjs-init`
+### Next Image
 
-Vježbe su raspoređene tematski. Dodatni materijali koje ubacimo u ovaj repozitorij bit će dodani u obliku git brancheva.  
-Ovdje su materijali starog Gatsby HCI projekta za 2019/2020. Pokušat ćemo pratiti sličan format.  
-https://github.com/kula124/HCi_2020_Fresh
+Izvori:
 
-Drugi materijali i resursi. Uzeto i ažurirano iz repozitorija iznad.  
-GIT:  
-https://github.com/kula124/HCi_2020_Fresh/tree/bonus--git-workflow  
-CSS:  
-https://github.com/kula124/HCi_2020_Fresh/tree/bonus--sytling-and-css
+https://www.datocms.com/blog/nextjs-images
 
-### YouTube is king
+https://medium.com/eincode/how-to-use-next-js-image-component-dfbf3725b12
 
-Ovaj repozitorij je tekstualan. Kažu da je slika 1000 riječi, a video je 60 slika u sekundi.  
-Učenje je lakše kad gledate i slušate nekoga dok radi, nego kad čitate kako se to radi.  
-Svjesni smo tog nedostatka pa je uključen popis korisnih video materijala na [ispod](#l).
+> ⚠️ Next 13 mijenja API kojim se koristi NextImage, ali principi rada i prednosti ostaju.
 
-### Pitajte što vam nije jasno često i uporno
+`koji smo već viđali do sad donosi prednosti nad običnim` tagom.
+Neke od prednosti uključuju:
 
-Autor ovog repozitorija i koda je bivši student koji je prije četiri godine počeo učiti web development. Slobodno mi se obratite kao i bilo kojem drugom studentu.  
-Konkretan odgovor na konkretno pitanje je najbolji i najbrži način da naučite nešto.  
-Iskoristite to. Lakše je nego guglati.  
-Kontakt Email:
-ikulis00@fesb.hr  
-Ili direktnom porukom na Teams.
-Nemojte prestati pitati dok pitanje nije odgovoreno ili vam osoba koju pitate kaže "ne znam". Tada pitajte drugu osobu.
+-   **Brže učitavanje stranice**: slike Next.js učitavat će se samo pri ulasku u okvir za prikaz, a prema zadanim se postavkama učitavaju odgođeno.
+-   **Responzivnost**: slikama će se promijeniti veličina u skladu s korištenim uređajem.
+-   **Vizualna stabilnost**: automatski se izbjegava problem kumulativne promjene izgleda. [Više ovdje](https://web.dev/cls/)
+-   **Poboljšana izvedba**: Next.js slike mogu se mijenjati u veličini i kodirati na zahtjev, čak i kada su pohranjene na udaljenim poslužiteljima ili vanjskom izvoru podataka, kao što je CMS. To vas sprječava da morate stvarati slike različitih veličina tijekom izrade, što ga čini bržim.
 
-## Vanjski sadržaji <a name="l"></a>
+### Korištenje
 
-**Video resursi:**
+Za početak potreban je import:
 
-- Uvod u React 30min [[YT](https://www.youtube.com/watch?v=hQAHSlTtcmY)]
-- What is NextJS (FireshipIO) 11min [[YT](https://www.youtube.com/watch?v=Sklc_fQBmcs)]
-- CSS: Općenito 20min [[YT](https://www.youtube.com/watch?v=1PnVor36_40)]
-- CSS: Flexbox 15min [[YT](https://www.youtube.com/watch?v=fYq5PXgSsbE)]
+```jsx
+import Image from 'next/image';
+```
 
-**Gotov dizajn:**
+Sljedeće što NextImage treba je `src` atribut koji može biti:
 
-- Login Page Tailwind 17min [[YT](https://www.youtube.com/watch?v=KFr2UP6xaIM)]
-- Login page transparent 10min [[YT](https://www.youtube.com/watch?v=slu3pImFcRI)]
-- Landing page 30min [[YT](https://www.youtube.com/watch?v=HZv8YHYUHTU)]
----
+1. Statički importana sika
+2. Relativna putanja na sliku u `public` folderu (primjeri u dosadašnjim vježbama)
+3. URL na sliku na internetu ili CMS-u / CDN-u
 
-**Dizajn inspiracija:**  
- <https://www.webdesign-inspiration.com/>
+Primjeri:
 
-<https://www.dtelepathy.com/blog/inspiration/23-great-examples-of-innovative-navigation-for-your-inspiration>
+1. Primjer statične slike:
 
-<https://medium.theuxblog.com/design-trends-all-the-best-big-hero-image-136061191451>
+```jsx
+import fooImage from '../public/assets/foo.jpg';
+```
 
-**Youtube Shorts:**
+i onda
 
-Steam:  
- <https://www.youtube.com/shorts/TmSIIR64yLQ>
+```jsx
+<>
+    {/*// ...*/}
+    <Image
+        src={fooImage}
+        alt="Foo image"
+        layout={'fill'}
+        // ...
+    />
+    {/*// ...*/}
+</>
+```
 
-Rotten Tomatoes:  
- <https://www.youtube.com/shorts/5TCkjhG1TVU>
+2. Primjer za relativnu putanju na sliku u `public`:
 
-Quora video:  
- <https://www.youtube.com/watch?v=ohTsv00c_E4>
+```jsx
+<Image src={'/assets/hero.png'} alt="Foo image" layout={'fill'} />
+```
 
-**Gotov kod spreman za korištenje:**  
- Bootsrap za React  
- <https://react-bootstrap.github.io/>
+3. Primjer za URL:
 
-Styled Components  
- <https://styled-components.com/>
+```jsx
+<Image
+    src={'https://assets-global.website-files.com/neka_slika.jpg'}
+    alt="Foo image"
+    layout={'fill'}
+/>
+```
 
-CSS animirani background:  
- <https://csspoint101.com/30-css-animated-background/>
+Ono što je bitno za javne slike je postavljanje whitelist domena za te slike.
 
-**Kontakt:**  
-Email: ikulis00@fesb.hr  
-MS Teams: Ivan Kuliš
+Iz sigurnosnih razloga Next ne dopušta da samo stavimo URL na sliku nego je potrebno i dodati domenu te slike u listu dopuštenih domena (tkz. whitelist)
+
+Ako pogledamo u `next.config.js` možemo vidit definirane domene koje smo koristili na vježbama:
+
+```js
+module.exports = {
+    reactStrictMode: true,
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'assets-global.website-files.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'i.ytimg.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'play-lh.googleusercontent.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'pbs.twimg.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'scrimba.com',
+            },
+        ],
+    },
+};
+```
+
+Ako koristimo ``na Nextu 13 ne trebamo`layout` prop.
+
+## SEO i meta tags
+
+SEO je dio dizajna. Stranica treba imati naslov vidljiv u browseru, infomracije koje će prikazati u Google pretragi, ikonu i sl.
+
+SEO je i dosta bitan za poslovne ciljeve. Detaljnije ovdje:
+https://www.metricmarketing.com/blog/the-importance-of-seo-for-your-business-benefits-of-seo-why-seo-is-so-powerful/
+
+Sljedi primjer dodavanja SEO-a u Next koristeći third party paket: [Next-SEO](https://www.npmjs.com/package/next-seo?activeTab=readme).
+
+```jsx
+<NextSeo
+    title="HCI 2022/2023"
+    description="A short description goes here."
+    openGraph={{
+        url: 'http://marjan.fesb.hr/~mcagalj/',
+        title: 'Our cool HCI page!',
+        description: 'Learn how to make pages using NEXT JS!',
+        images: [
+            {
+                url: 'https://res.cloudinary.com/mcagalj/image/upload/f_auto,c_limit,w_128,q_auto/v1636883352/next_course/logo_t6nqep.png',
+            },
+        ],
+        siteName: 'SiteName',
+    }}
+    twitter={{
+        handle: '@handle',
+        site: '@site',
+        cardType: 'summary_large_image',
+    }}
+/>
+```
+
+Za testiranje možemo koristiti `localtunnel` i `https://www.opengraph.xyz/`.
+
+## Deploy
+
+Za deploy koristit ćemo **Vercel**! Platformu tvoraca Next-a. Alternativno, možemo koristiti **Netlify**, privatni VPS ili RasberyPI (extra bodovi za ovo 😁).
+
+Deploy ćemo raditi pomoćuu GitHub-a. Svaki novi push u `main` branch aktivirat će ponovni deploy.  
+Deploy korak radi build Next aplikacije i objavljuje stranicu javno. Spajanje tog koraka na GitHub primjer je automatizacijedeployaa koja se još zove i **Continuous Deployment**
+
+Započetak registrirajmo se naVercell koristeći Githubb Account:
+[Vercel](https:/vercell.com)
+
+Zatim idemo na stvaranje novog projekta i biramo našrepoo.
+
+<p align='center'>
+  <img src='public/Deploy/pick_a_repo.png'>
+</p>
+
+Zatim na koraku možemo postaviti konfiguraciju. Za sada nam ne treba:
+
+<p align='center'>
+  <img src='public/Deploy/finish.png'>
+</p>
+
+Ako je sve prošlo ok trebali bismo vidjeti nešto ovako:
+
+<p align='center'>
+    <img src='public/Deploy/sucessful_deploy.png' />
+</P>
