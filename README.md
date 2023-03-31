@@ -51,7 +51,6 @@ Nemojte prestati pitati dok pitanje nije odgovoreno ili vam osoba koju pitate ka
 - Login Page Tailwind 17min [[YT](https://www.youtube.com/watch?v=KFr2UP6xaIM)]
 - Login page transparent 10min [[YT](https://www.youtube.com/watch?v=slu3pImFcRI)]
 - Landing page 30min [[YT](https://www.youtube.com/watch?v=HZv8YHYUHTU)]
-
 ---
 
 **Dizajn inspiracija:**  
